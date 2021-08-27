@@ -233,6 +233,53 @@ namespace src
                     Console.WriteLine(favoriteTask7);
                 }
 
+                {
+                    // Relational Patterns and Pattern Combinators in C# 9.0
+
+                    // With C# 9.0, you can write the when condition also with the is expression and
+                    // with relational patterns and the and pattern combinator like in the following snippet.
+                    // Visual Studio actually suggests this to you. Note how you write the YearOfBirth property
+                    // in the code snippet below just once, and then you use the is expression with combined
+                    // relational patterns to check the shape of the property.
+
+                    string favoriteTask = obj switch
+                    {
+                        Developer dev when dev.YearOfBirth is >= 1980 and <= 1989
+                          => $"{dev.FirstName} listens to metal",
+                        _ => "Dance like no one is watching"
+                    };
+
+                    // But instead of using the when condition, you can also use a property pattern,
+                    // which looks even nicer and more compact
+
+                    string favoriteTask2 = obj switch
+                    {
+                        Developer { YearOfBirth: >= 1980 and <= 1989 } dev
+                          => $"{dev.FirstName} listens to metal",
+                        _ => "Dance like no one is watching"
+                    };
+
+                    string favoriteTask3 = developer switch
+                    {
+                        { Manager: { YearOfBirth: 1980 } } => "Manager listens to heavy metal",
+                        not null => $"{developer.FirstName} writes code",
+                        _ => "Look into the void",
+                    };
+
+                    int yearOfBirth = 1980;
+                    string favoriteTask6 = yearOfBirth switch
+                    {
+                        1984 => "Read George Orwell's book", // Constant pattern
+                        >= 1980 and <= 1989 => "Listen to heavy metal", // Combined relational patterns
+                        > 1989 => "Write emails like everyone is watching", // Relational pattern
+                        _ => "Dance like no one is watching", // <- This comma here is optional
+                    };
+
+                    //  Did you notice the last comma behind the last switch expression arm?
+                    //  That is the so-called trailing comma, and it’s optional.
+                    //  Sometimes when you copy and paste switch expression arms to change the order,
+                    //  it’s a bit simpler if you can keep that trailing comma.
+                }
             }
         }
     }
