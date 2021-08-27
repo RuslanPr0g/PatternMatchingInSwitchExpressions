@@ -6,6 +6,8 @@ namespace src
     {
         static void Main(string[] args)
         {
+            var developer = new Developer { FirstName = "Julia" };
+
             {
                 // Switch Statements Before C# 7.0
 
@@ -13,8 +15,6 @@ namespace src
                  Since C# 1.0, you can write switch statements in your code.
                  You usually do this instead of writing if/else if/else logic.
                  */
-
-                var developer = new Developer { FirstName = "Julia" };
 
                 string favoriteTask;
 
@@ -177,6 +177,60 @@ namespace src
                     default:
                         favoriteTask5 = "Do what objects do";
                         break;
+                }
+
+                {
+                    // Switch Expressions and Pattern Matching in C# 8.0
+
+                    // C# 8.0 introduced switch expressions.
+
+                    string favoriteTask;
+
+                    switch (developer.FirstName)
+                    {
+                        case "Julia":
+                            favoriteTask = "Writing code";
+                            break;
+                        case "Thomas":
+                            favoriteTask = "Writing this blog post";
+                            break;
+                        default:
+                            favoriteTask = "Watching TV";
+                            break;
+                    }
+
+                    // When you use C# 8.0 or later, you can put the cursor in Visual Studio on that switch statement,
+                    // and Visual Studio will suggest you to convert it to a switch expression
+
+                    string favoriteTask2 = developer.FirstName switch
+                    {
+                        "Julia" => "Writing code", // This is the first switch expression arm
+                        "Thomas" => "Writing this blog post",
+                        _ => "Watching TV",
+                    };
+
+                    string favoriteTask3 = obj switch
+                    {
+                        Developer { YearOfBirth: 1980 } dev => $"{dev.FirstName} listens to metal",
+                        Developer dev => $"{dev.FirstName} writes code",
+                        Manager _ => "Create meetings",
+                        _ => "Do what objects do",
+                    };
+
+                    Console.WriteLine(favoriteTask);
+                    Console.WriteLine(favoriteTask2);
+                    Console.WriteLine(favoriteTask3);
+
+                    string favoriteTask7 = obj switch
+                    {
+                        Developer dev when dev.YearOfBirth >= 1980 && dev.YearOfBirth <= 1989
+                          => $"{dev.FirstName} listens to metal",
+                        Developer dev => $"{dev.FirstName} writes code",
+                        Manager _ => "Create meetings",
+                        _ => "Do what objects do",
+                    };
+
+                    Console.WriteLine(favoriteTask7);
                 }
 
             }
